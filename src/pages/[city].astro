@@ -6,8 +6,6 @@ import Markdown from '../components/shared/Markdown.astro';
 import type { City } from '../core/city.interface';
 import Layout from '../layouts/Layout.astro';
 import { CityService } from './../core/city.service';
-import './../styles/markdown.css';
-import './../styles/table.css';
 
 const cityName = decodeURIComponent(Astro.params['city']!);
 

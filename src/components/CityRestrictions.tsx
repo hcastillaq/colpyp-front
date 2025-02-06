@@ -1,6 +1,5 @@
 import { useEffect, useState, type FC } from 'react';
 import type { Calendar } from '../core/calendar.interface';
-
 interface Props {
   city: string;
 }
@@ -60,7 +59,7 @@ export const CityRestrictions: FC<Props> = ({ city }) => {
   };
 
   return (
-    <div className="text-left">
+    <div className="">
       <div className="flex justify-center my-4">
         <button
           onClick={handleClick}
