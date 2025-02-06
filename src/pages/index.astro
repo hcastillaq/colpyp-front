@@ -1,22 +1,16 @@
 ---
 import CityNames from '../components/CityNames.astro';
-import Divider from '../components/shared/Divider.astro';
 import Layout from '../layouts/Layout.astro';
 
 export const prerender = false;
 ---
 
 <Layout>
-  <section class="w-full md:max-w-3xl mx-auto">
-    <div class="my-10">
-      <Divider />
-    </div>
-    <div class="min-h-90">
-      <CityNames>
-        <div slot="fallback" class="text-center">
-          <p>Cargando...</p>
-        </div>
-      </CityNames>
-    </div>
-  </section>
+  <div class="min-h-90">
+    <CityNames>
+      <div slot="fallback" class="text-center">
+        <p>Cargando...</p>
+      </div>
+    </CityNames>
+  </div>
 </Layout>

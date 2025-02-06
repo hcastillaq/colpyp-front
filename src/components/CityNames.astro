@@ -4,7 +4,7 @@ import { CityService } from '../core/city.service';
 const names = await CityService.getCityNames();
 ---
 
-<div class="grid md:grid-cols-2 text-center max-w-sm mx-auto">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-center max-w-md mx-auto">
   {
     names.map((name) => {
       const normalizeName = name

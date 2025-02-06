@@ -1,7 +1,8 @@
 ---
+import Divider from '../components/shared/Divider.astro';
 import Footer from '../components/shared/Footer.astro';
 import Header from '../components/shared/Header.astro';
-import './../styles/tailwind.css';
+import '../styles/tailwind.css';
 ---
 
 <!doctype html>
@@ -24,20 +25,35 @@ import './../styles/tailwind.css';
     <meta name="author" content="COLPYP" />
   </head>
   <body>
-    <main>
-      <Header />
-      <slot />
-    </main>
-    <Footer />
+    <div class="max-w-2xl mx-auto px-2 md:px-0">
+      <div class="mt-10">
+        <Header />
+      </div>
+      <div class="my-10">
+        <Divider />
+      </div>
+      <main>
+        <slot />
+      </main>
+      <div class="my-10">
+        <Divider />
+      </div>
+      <Footer />
+    </div>
   </body>
 </html>
 
 <style>
+  body,
+  html {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-size: 16px;
+  }
+
   main {
-    max-width: 1280px;
-    width: 100%;
-    margin: 0 auto;
-    padding: 0 1rem;
+    flex: 1;
     box-sizing: border-box;
   }
 </style>
