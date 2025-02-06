@@ -7,6 +7,8 @@ import node from '@astrojs/node';
 
 import react from '@astrojs/react';
 
+import partytown from '@astrojs/partytown';
+
 // https://astro.build/config
 export default defineConfig({
   output: 'server',
@@ -24,5 +26,12 @@ export default defineConfig({
     host: true,
   },
 
-  integrations: [react()],
+  integrations: [
+    react(),
+    partytown({
+      config: {
+        forward: ['dataLayer.push'],
+      },
+    }),
+  ],
 });

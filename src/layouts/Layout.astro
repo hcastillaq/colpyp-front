@@ -20,9 +20,25 @@ import '../styles/tailwind.css';
     />
     <meta
       name="keywords"
-      content="pico y placa, restricciones vehiculares, Colombia, movilidad, tránsito, restricción pico y placa, consulta pico y placa, pico y placa Bogotá, pico y placa Medellín, pico y placa Cali, pico y placa Bucaramanga"
+      content="pico y placa, restricciones vehicular, Colombia, movilidad, tránsito, restricción pico y placa, consulta pico y placa, pico y placa Bogotá, pico y placa Medellín, pico y placa Cali, pico y placa Bucaramanga"
     />
     <meta name="author" content="COLPYP" />
+
+    <!-- google analytics -->
+    <script
+      type="text/partytown"
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-RDY45LS9ZZ"></script>
+
+    <script type="text/partytown">
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag('js', new Date());
+
+      gtag('config', 'G-RDY45LS9ZZ');
+    </script>
   </head>
   <body>
     <div class="max-w-2xl mx-auto px-2 md:px-0">
@@ -50,10 +66,5 @@ import '../styles/tailwind.css';
     padding: 0;
     box-sizing: border-box;
     font-size: 16px;
-  }
-
-  main {
-    flex: 1;
-    box-sizing: border-box;
   }
 </style>
