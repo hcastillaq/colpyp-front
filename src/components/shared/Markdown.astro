@@ -1,0 +1,10 @@
+---
+import { Remarkable } from 'remarkable';
+
+const { content } = await Astro.props;
+const md = new Remarkable();
+---
+
+<div set:html={md.render(content)} class="markdown-content" />
+
+<style></style>

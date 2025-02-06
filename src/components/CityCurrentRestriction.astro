@@ -1,0 +1,46 @@
+---
+import { CityService } from '../core/city.service';
+import type { Restriction } from './../core/restriction.interface';
+const { city } = Astro.props;
+
+// get current date in format YYYY-MM-DD
+const currentDate = new Date().toISOString().split('T')[0];
+
+const restrictions: Restriction[] = await CityService.getRestrictionByDate(
+  city,
+  currentDate,
+);
+---
+
+<div>
+  {
+    !restrictions.length ? (
+      <p>No se encontraron restricciones para la fecha actual</p>
+    ) : (
+      <table aria-label="Lista de vehículos con sus placas restringidas">
+        <thead>
+          <tr>
+            <th>
+              <strong>Vehículo</strong>
+            </th>
+            <th>
+              <strong>Placas con restricción</strong>
+            </th>
+            <th>
+              <strong>Información</strong>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {restrictions.map((restriction) => (
+            <tr>
+              <td>{restriction.vehicle}</td>
+              <td>{restriction.plates}</td>
+              <td>{restriction.information || 'N/A'}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    )
+  }
+</div>

@@ -1,0 +1,53 @@
+---
+import CityCurrentRestriction from '../components/CityCurrentRestriction.astro';
+import { CityRestrictions } from '../components/CityRestrictions';
+import Divider from '../components/shared/Divider.astro';
+import Markdown from '../components/shared/Markdown.astro';
+import type { City } from '../core/city.interface';
+import Layout from '../layouts/Layout.astro';
+import { CityService } from './../core/city.service';
+import './../styles/markdown.css';
+import './../styles/table.css';
+
+const cityName = decodeURIComponent(Astro.params['city']!);
+
+const city: City | null = await CityService.getByName(cityName);
+
+if (city === null) {
+  return Astro.redirect('/');
+}
+
+export const prerender = false;
+---
+
+<Layout>
+  <section class="mx-auto max-w-2xl">
+    <div class="my-10">
+      <Divider />
+    </div>
+    <div class="text-center flex flex-col gap-4">
+      <h1 class="text-4xl font-bold">{city?.name}</h1>
+      <span class="text-xl">
+        {
+          new Date().toLocaleDateString('es', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+          })
+        }
+      </span>
+
+      <CityCurrentRestriction city={city.name} server:defer>
+        <div slot="fallback">
+          <p>Cargando...</p>
+        </div>
+      </CityCurrentRestriction>
+
+      <CityRestrictions city={city.name} client:only="react" />
+    </div>
+    <div class="my-10">
+      <Divider />
+    </div>
+    <Markdown content={city?.information!} />
+  </section>
+</Layout>
