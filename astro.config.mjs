@@ -9,6 +9,10 @@ import react from '@astrojs/react';
 
 import partytown from '@astrojs/partytown';
 
+import playformCompress from '@playform/compress';
+
+import compressor from 'astro-compressor';
+
 // https://astro.build/config
 export default defineConfig({
   output: 'server',
@@ -32,6 +36,14 @@ export default defineConfig({
       config: {
         forward: ['dataLayer.push'],
       },
+    }),
+    playformCompress({
+      CSS: true,
+      HTML: true,
+    }),
+    compressor({
+      brotli: true,
+      gzip: false,
     }),
   ],
 });

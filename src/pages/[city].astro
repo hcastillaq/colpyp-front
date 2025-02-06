@@ -15,9 +15,23 @@ if (city === null) {
   return Astro.redirect('/');
 }
 
+const meta = {
+  title: `Pico y placa en colombia - ${city?.name} | COLPYP`,
+  description: `Consulta las restricciones de Pico y Placa en ${city.name}. Infórmate sobre los horarios y días de restricción para mejorar la movilidad y reducir la congestión vehicular en las principales vías de la ciudad.`,
+};
+
 export const prerender = false;
 ---
 
+<head>
+  <title>{meta.title}</title>
+
+  <meta name="description" content={meta.description} />
+  <meta property="og:title" content={meta.title} />
+  <meta property="og:description" content={meta.description} />
+  <meta name="twitter:title" content={meta.title} />
+  <meta name="twitter:description" content={meta.description} />
+</head>
 <Layout>
   <section class="mx-auto">
     <div class="text-center flex flex-col gap-4">
