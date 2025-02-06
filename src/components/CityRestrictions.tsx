@@ -59,8 +59,8 @@ export const CityRestrictions: FC<Props> = ({ city }) => {
   };
 
   return (
-    <div className="">
-      <div className="flex justify-center my-4">
+    <div className="flex flex-col gap-10">
+      <div className="flex justify-center">
         <button
           onClick={handleClick}
           className="border px-4 rounded 
@@ -71,7 +71,7 @@ export const CityRestrictions: FC<Props> = ({ city }) => {
       </div>
 
       {show ? (
-        <div className="flex flex-col gap-6 mt-8">
+        <div className="flex flex-col gap-10 ">
           <div className="flex justify-center ">
             <select
               value={month || ''}
