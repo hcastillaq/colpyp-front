@@ -3,6 +3,14 @@ import Divider from '../components/shared/Divider.astro';
 import Footer from '../components/shared/Footer.astro';
 import Header from '../components/shared/Header.astro';
 import '../styles/styles.css';
+
+const title =
+  'Pico y Placa en Colombia - Consulta Restricciones en tu Ciudad | COLPYP';
+const description =
+  'Consulta fácilmente las restricciones de Pico y Placa en Colombia. Ingresa tu ciudad y obtén información actualizada sobre días y horarios de restricción vehicular.';
+
+const keywords =
+  'pico y placa, restricciones vehicular, Colombia, movilidad, tránsito, restricción pico y placa, consulta pico y placa, pico y placa Bogotá, pico y placa Medellín, pico y placa Cali, pico y placa Bucaramanga';
 ---
 
 <!doctype html>
@@ -12,16 +20,10 @@ import '../styles/styles.css';
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <title>
-      Pico y Placa en Colombia - Consulta Restricciones en tu Ciudad | COLPYP
+      {title}
     </title>
-    <meta
-      name="description"
-      content="Consulta fácilmente las restricciones de Pico y Placa en Colombia. Ingresa tu ciudad y obtén información actualizada sobre días y horarios de restricción vehicular."
-    />
-    <meta
-      name="keywords"
-      content="pico y placa, restricciones vehicular, Colombia, movilidad, tránsito, restricción pico y placa, consulta pico y placa, pico y placa Bogotá, pico y placa Medellín, pico y placa Cali, pico y placa Bucaramanga"
-    />
+    <meta name="description" content={description} />
+    <meta name="keywords" content={keywords} />
     <meta name="author" content="COLPYP" />
 
     <!-- google analytics -->

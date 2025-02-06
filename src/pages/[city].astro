@@ -3,6 +3,7 @@ import CityCurrentRestriction from '../components/CityCurrentRestriction.astro';
 import { CityRestrictions } from '../components/CityRestrictions';
 import Divider from '../components/shared/Divider.astro';
 import Markdown from '../components/shared/Markdown.astro';
+import Seo from '../components/shared/Seo.astro';
 import type { City } from '../core/city.interface';
 import Layout from '../layouts/Layout.astro';
 import { CityService } from './../core/city.service';
@@ -23,19 +24,12 @@ const meta = {
 export const prerender = false;
 ---
 
-<head>
-  <title>{meta.title}</title>
-
-  <meta name="description" content={meta.description} />
-  <meta property="og:title" content={meta.title} />
-  <meta property="og:description" content={meta.description} />
-  <meta name="twitter:title" content={meta.title} />
-  <meta name="twitter:description" content={meta.description} />
-</head>
 <Layout>
+  <Seo title={meta.title} description={meta.description} />
+
   <section class="mx-auto">
     <div class="text-center flex flex-col gap-4">
-      <h1 class="text-4xl font-bold">{city?.name}</h1>
+      <h1 class="text-4xl font-bold capitalize">{city?.name}</h1>
       <span class="text-xl">
         {
           new Date().toLocaleDateString('es', {
