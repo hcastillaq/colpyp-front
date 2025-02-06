@@ -38,7 +38,7 @@ export const prerender = false;
         </div>
       </CityCurrentRestriction>
 
-      <CityRestrictions city={city.name} client:only="react" />
+      <CityRestrictions city={city.name} client:load />
     </div>
     <div class="my-10">
       <Divider />
