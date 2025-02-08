@@ -29,8 +29,6 @@ export const CityRestrictions: FC<Props> = ({ city }) => {
       return formatDDMMYY(new Date(restriction.date)) === formatDDMMYY(date);
     });
 
-    console.log(restrictionsByDate);
-
     return restrictionsByDate;
   };
 

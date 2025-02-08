@@ -3,13 +3,12 @@ import CityCurrentRestriction from '../components/CityCurrentRestriction.astro';
 import { CityRestrictions } from '../components/CityRestrictions';
 import Divider from '../components/shared/Divider.astro';
 import Markdown from '../components/shared/Markdown.astro';
-import type { City } from '../core/city.interface';
 import Layout from '../layouts/Layout.astro';
 import { CityService } from './../core/city.service';
 
 const cityName = decodeURIComponent(Astro.params['city']!);
 
-const city: City | null = await CityService.getByName(cityName);
+const city = await CityService.getByName(cityName);
 
 if (city === null) {
   return Astro.redirect('/');
