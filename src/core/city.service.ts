@@ -1,63 +1,74 @@
-import type { Calendar } from './calendar.interface';
-import type { City } from './city.interface';
-import type { Restriction } from './restriction.interface';
-
-const api = import.meta.env.API;
+import { and, asc, eq, like } from 'drizzle-orm';
+import { db } from '../db';
+import {
+  CityTable,
+  RestrictionTable,
+  RestrictionVehicleTable,
+  VehicleTable,
+} from '../db/drizzle/schema';
 
 export const CityService = {
   getCityNames: async () => {
-    return fetch(`${api}/city-names`).then(async (res) => {
-      if (res.status === 200) {
-        const cities = await res.json();
-        return cities as string[];
-      } else {
-        return [];
-      }
-    });
-  },
-  getByName: async (name: string) => {
-    return fetch(`${api}/cities/${name}`).then(async (res) => {
-      if (res.status === 200) {
-        const city = await res.json();
-        return city as City;
-      } else {
-        return null;
-      }
-    });
+    const allCity = await db.select().from(CityTable);
+    const cityNames = allCity.map((city) => String(city.name).toLowerCase());
+    return cityNames as string[];
   },
 
-  getRestrictions: async (name: string) => {
-    return fetch(`${api}/cities/${name}/restrictions`).then(async (res) => {
-      if (res.status === 200) {
-        const restrictions = await res.json();
-        return restrictions as Restriction[];
-      } else {
-        return [];
-      }
-    });
+  getByName: async (name: string) => {
+    const city = await db
+      .select()
+      .from(CityTable)
+      .where(eq(CityTable.name, name))
+      .limit(1)
+      .then((cities) => cities[0]);
+
+    if (!city) {
+      return null;
+    }
+
+    return city;
   },
 
   getRestrictionByDate: async (name: string, date: string) => {
-    return fetch(`${api}/cities/${name}/restrictions/${date}`).then(
-      async (res) => {
-        if (res.status === 200) {
-          const restriction = await res.json();
-          return restriction as Restriction[];
-        } else {
-          return [];
-        }
-      },
-    );
-  },
+    const city = await db
+      .select()
+      .from(CityTable)
+      .where(eq(CityTable.name, name))
+      .limit(1)
+      .then((cities) => cities[0]);
 
-  getCalendar: async (name: string) => {
-    return fetch(`${api}/cities/${name}/calendar`).then(async (res) => {
-      if (res.status === 200) {
-        const calendar = await res.json();
-        return calendar as Calendar[];
-      } else {
-        return [];
-      }
+    if (!city) {
+      return [];
+    }
+
+    const restrictions = await db
+      .select()
+      .from(RestrictionTable)
+      .leftJoin(
+        RestrictionVehicleTable,
+        eq(RestrictionTable.id, RestrictionVehicleTable.restriction_id),
+      )
+      .leftJoin(
+        VehicleTable,
+        eq(RestrictionVehicleTable.vehicle_id, VehicleTable.id),
+      )
+      .where(
+        and(
+          eq(RestrictionTable.city_id, city.id),
+          like(RestrictionTable.date, `%${date}%`),
+        ),
+      )
+      .orderBy(asc(RestrictionTable.date));
+
+    const parseRestrictions = restrictions.map((restriction) => {
+      return {
+        date: restriction.restrictions_restriction.date,
+        vehicle: restriction.vehicles_vehicle!.name,
+        information: restriction.restrictions_restrictionvehicle!.information,
+        plates: restriction.restrictions_restrictionvehicle!.plates,
+      };
     });
+
+    return parseRestrictions;
   },
 };
