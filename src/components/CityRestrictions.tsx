@@ -1,131 +1,131 @@
 import { useEffect, useState, type FC } from 'react';
-import type { Calendar } from '../core/calendar.interface';
+import { DayPicker } from 'react-day-picker';
+import { es } from 'react-day-picker/locale';
+import 'react-day-picker/style.css';
+import type { Restriction } from '../core/restriction.interface';
 interface Props {
   city: string;
 }
 
-const monthsNames = [
-  'enero',
-  'febrero',
-  'marzo',
-  'abril',
-  'mayo',
-  'junio',
-  'julio',
-  'agosto',
-  'septiembre',
-  'octubre',
-  'noviembre',
-  'diciembre',
-];
-
 export const CityRestrictions: FC<Props> = ({ city }) => {
   const [show, setShow] = useState(false);
-  const [calendars, setCalendars] = useState<Calendar[]>([]);
-  const [month, setMonth] = useState<string | null>(null);
-  const [calendar, setCalendar] = useState<Calendar | null>(null);
+  const [restrictions, setRestrictions] = useState<Restriction[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [date, setDate] = useState<Date>();
 
-  const handleClick = async () => {
-    if (calendars.length === 0) {
-      const response = await fetch(`/api/calendar/${city}`).then((res) =>
-        res.json(),
-      );
-      setCalendars(response);
-      const currentMonth = new Date().getMonth();
-      setMonth(monthsNames[currentMonth]);
+  const getRestrictions = async () => {
+    const restrictions = await fetch(`/api/restrictions/${city}`).then(
+      async (res) => await res.json(),
+    );
+    return restrictions;
+  };
+
+  const getRestrictionsByDate = (date: Date | null | undefined) => {
+    if (!date) {
+      return [];
     }
 
-    setShow(!show);
+    const restrictionsByDate = restrictions.filter((restriction) => {
+      return formatDDMMYY(new Date(restriction.date)) === formatDDMMYY(date);
+    });
+
+    console.log(restrictionsByDate);
+
+    return restrictionsByDate;
   };
 
   useEffect(() => {
-    const calendar = getCalendarByMonth(month);
-    setCalendar(calendar);
-  }, [month]);
+    if (show && restrictions.length === 0) {
+      setLoading(true);
+      getRestrictions()
+        .then((res) => {
+          setRestrictions(res);
+          setDate(new Date());
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    }
+  }, [show]);
 
-  const getCalendarByMonth = (month: string | null | undefined) => {
-    if (!month) return null;
-    return calendars.find((calendar) => calendar.month === month) || null;
-  };
-
-  const handleMonthChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const month$ = e.target.value;
-    setMonth(month$);
-  };
-
-  const formatDDMMYY = (date: string) => {
-    const [year, month, day] = date.split('-');
+  const formatDDMMYY = (date: Date | null | undefined) => {
+    if (!date) {
+      return '';
+    }
+    const stringDate = date.toISOString().split('T')[0];
+    const [year, month, day] = stringDate.split('-');
     return `${day}/${month}/${year}`;
   };
 
+  const RestrictionsTable = () => {
+    if (!date) {
+      return (
+        <div>
+          <p>Por favor seleccione una fecha</p>
+        </div>
+      );
+    }
+
+    return getRestrictionsByDate(date).length ? (
+      <div className="flex flex-col gap-4">
+        <p className="text-lg">
+          Restricciones para el <b>{formatDDMMYY(date)}</b>
+        </p>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Vehículo</th>
+              <th>Placas con restricción</th>
+              <th>Información</th>
+            </tr>
+          </thead>
+          <tbody>
+            {getRestrictionsByDate(date).map((restriction) => (
+              <tr key={restriction.vehicle}>
+                <td>{restriction.vehicle}</td>
+                <td>{restriction.plates}</td>
+                <td>{restriction.information || 'N/A'}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    ) : (
+      <div>
+        <p className="text-lg">
+          Ups, a un no hay restricciones para la fecha{' '}
+          <b>{formatDDMMYY(date)}</b>
+        </p>
+      </div>
+    );
+  };
+
   return (
-    <div className="flex flex-col gap-10">
+    <div className="flex flex-col gap-10 mt-4">
       <div className="flex justify-center">
         <button
-          onClick={handleClick}
+          onClick={() => setShow(!show)}
           className="border px-4 rounded 
           cursor-pointer bg-gray-100 hover:bg-gray-200 transition-colors"
         >
           {show ? 'Ocultar' : 'Mostrar'} calendario
         </button>
       </div>
-
-      {show ? (
+      {loading ? <div>Cargando...</div> : null}
+      {show && !loading ? (
         <div className="flex flex-col gap-10 ">
-          <div className="flex justify-center ">
-            <select
-              value={month || ''}
-              className="border rounded px-2 min-w-60 text-center"
-              onChange={handleMonthChange}
-            >
-              {monthsNames.map((name) => (
-                <option key={name} value={name}>
-                  {name.toUpperCase()}
-                </option>
-              ))}
-            </select>
+          <div className="flex justify-center">
+            <DayPicker
+              locale={es}
+              mode="single"
+              selected={date}
+              onSelect={setDate}
+              className="uppercase"
+              onMonthChange={() => setDate(undefined)}
+            />
           </div>
-
-          {calendar ? (
-            <div className="flex flex-col gap-10">
-              {calendar.dates.map((item) => {
-                return (
-                  <div className="flex flex-col gap-2" key={item.date}>
-                    <div className="text-center">
-                      <span className="font-bold text-lg">
-                        {formatDDMMYY(item.date)}
-                      </span>
-                    </div>
-                    <table>
-                      <thead>
-                        <tr>
-                          <th className="capitalize">vehículo</th>
-                          <th className="capitalize">placas con restricción</th>
-                          <th className="capitalize">información</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {item.restrictions.map((restriction) => {
-                          return (
-                            <tr key={`${item.date}-${restriction.vehicle}`}>
-                              <td>{restriction.vehicle}</td>
-                              <td>{restriction.plates}</td>
-                              <td>{restriction.information || 'N/A'}</td>
-                            </tr>
-                          );
-                        })}
-                      </tbody>
-                    </table>
-                  </div>
-                );
-              })}
-            </div>
-          ) : (
-            <p className="text-center text-lg">
-              ups, a un no hay restricciones para el mes de{' '}
-              <b> {month?.toUpperCase()}.</b>
-            </p>
-          )}
+          <RestrictionsTable />
         </div>
       ) : null}
     </div>

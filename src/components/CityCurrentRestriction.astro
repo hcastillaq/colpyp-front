@@ -3,16 +3,32 @@ import { CityService } from '../core/city.service';
 import type { Restriction } from './../core/restriction.interface';
 const { city } = Astro.props;
 
-// get current date in format YYYY-MM-DD
-const currentDate = new Date().toISOString().split('T')[0];
+// get current date in format YYYY-MM-DD and time zone Colombia
+
+const now = new Date();
+const options = { timeZone: 'America/Bogota', hour12: false };
+
+const formatter = new Intl.DateTimeFormat('es-CO', {
+  ...options,
+  year: 'numeric',
+  month: '2-digit',
+  day: '2-digit',
+});
+
+const currentDate = formatter.format(now);
+const isoDate = currentDate.split('/').reverse().join('-');
 
 const restrictions: Restriction[] = await CityService.getRestrictionByDate(
   city,
-  currentDate,
+  isoDate,
 );
 ---
 
-<div>
+<div class="flex flex-col gap-2">
+  <strong class="text-2xl my-4">
+    {currentDate}
+  </strong>
+
   {
     !restrictions.length ? (
       <p>No se encontraron restricciones para la fecha actual</p>
