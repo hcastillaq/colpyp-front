@@ -1,6 +1,5 @@
 ---
 import { CityService } from '../core/city.service';
-import type { Restriction } from './../core/restriction.interface';
 const { city } = Astro.props;
 
 // get current date in format YYYY-MM-DD and time zone Colombia
@@ -18,10 +17,7 @@ const formatter = new Intl.DateTimeFormat('es-CO', {
 const currentDate = formatter.format(now);
 const isoDate = currentDate.split('/').reverse().join('-');
 
-const restrictions: Restriction[] = await CityService.getRestrictionByDate(
-  city,
-  isoDate,
-);
+const restrictions = await CityService.getRestrictionByDate(city, isoDate);
 ---
 
 <div class="flex flex-col gap-2">

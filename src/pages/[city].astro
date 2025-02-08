@@ -30,7 +30,7 @@ export const prerender = false;
 >
   <section class="mx-auto">
     <div class="text-center flex flex-col gap-4">
-      <h1 class="text-4xl font-bold capitalize">{city?.name}</h1>
+      <h2 class="text-4xl font-bold capitalize">{city?.name}</h2>
       <CityCurrentRestriction city={city.name} />
       <CityRestrictions city={city.name} client:load />
     </div>
