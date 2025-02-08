@@ -3,7 +3,6 @@ import CityCurrentRestriction from '../components/CityCurrentRestriction.astro';
 import { CityRestrictions } from '../components/CityRestrictions';
 import Divider from '../components/shared/Divider.astro';
 import Markdown from '../components/shared/Markdown.astro';
-import Seo from '../components/shared/Seo.astro';
 import type { City } from '../core/city.interface';
 import Layout from '../layouts/Layout.astro';
 import { CityService } from './../core/city.service';
@@ -19,14 +18,17 @@ if (city === null) {
 const meta = {
   title: `Pico y placa en colombia - ${city?.name} | COLPYP`,
   description: `Consulta las restricciones de Pico y Placa en ${city.name}. Infórmate sobre los horarios y días de restricción para mejorar la movilidad y reducir la congestión vehicular en las principales vías de la ciudad.`,
+  keywords: `pico y placa, ${city?.name}, restricciones, movilidad, tráfico, congestión vehicular`,
 };
 
 export const prerender = false;
 ---
 
-<Layout>
-  <Seo title={meta.title} description={meta.description} />
-
+<Layout
+  title={meta.title}
+  description={meta.description}
+  keywords={meta.keywords}
+>
   <section class="mx-auto">
     <div class="text-center flex flex-col gap-4">
       <h1 class="text-4xl font-bold capitalize">{city?.name}</h1>

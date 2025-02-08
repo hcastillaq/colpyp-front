@@ -5,26 +5,35 @@ import Header from '../components/shared/Header.astro';
 import '../styles/styles.css';
 
 const title =
+  Astro.props.title ||
   'Pico y Placa en Colombia - Consulta Restricciones en tu Ciudad | COLPYP';
 const description =
+  Astro.props.description ||
   'Consulta fácilmente las restricciones de Pico y Placa en Colombia. Ingresa tu ciudad y obtén información actualizada sobre días y horarios de restricción vehicular.';
 
 const keywords =
+  Astro.props.keywords ||
   'pico y placa, restricciones vehicular, Colombia, movilidad, tránsito, restricción pico y placa, consulta pico y placa, pico y placa Bogotá, pico y placa Medellín, pico y placa Cali, pico y placa Bucaramanga';
 ---
 
 <!doctype html>
 <html lang="es">
   <head>
+    <title>{title}</title>
+
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
-    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-    <title>
-      {title}
-    </title>
+    <meta name="robots" content="index, follow" />
     <meta name="description" content={description} />
-    <meta name="keywords" content={keywords} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
     <meta name="author" content="COLPYP" />
+    <meta name="keywords" content={keywords} />
+
+    <!-- favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <!-- sitemap -->
     <link rel="sitemap" href="/sitemap-index.xml" />
     <!-- google analytics -->
