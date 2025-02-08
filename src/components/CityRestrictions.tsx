@@ -73,9 +73,9 @@ export const CityRestrictions: FC<Props> = ({ city }) => {
         <table>
           <thead>
             <tr>
-              <th>Vehículo</th>
-              <th>Placas con restricción</th>
-              <th>Información</th>
+              <th scope="col">Vehículo</th>
+              <th scope="col">Placas con restricción</th>
+              <th scope="col">Información</th>
             </tr>
           </thead>
           <tbody>

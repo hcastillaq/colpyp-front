@@ -21,26 +21,24 @@ const restrictions = await CityService.getRestrictionByDate(city, isoDate);
 ---
 
 <div class="flex flex-col gap-2">
-  <strong class="text-2xl my-4">
+  <time datetime={isoDate} class="text-2xl my-4">
     {currentDate}
-  </strong>
+  </time>
 
   {
     !restrictions.length ? (
       <p>No se encontraron restricciones para la fecha actual</p>
     ) : (
-      <table aria-label="Lista de vehículos con sus placas restringidas">
+      <table aria-describedby="info-pico-placa">
+        <caption id="info-pico-placa" class="sr-only">
+          Tabla con las restricciones de pico y placa en Bogotá para el
+          08/02/2025.
+        </caption>
         <thead>
           <tr>
-            <th>
-              <strong>Vehículo</strong>
-            </th>
-            <th>
-              <strong>Placas con restricción</strong>
-            </th>
-            <th>
-              <strong>Información</strong>
-            </th>
+            <th scope="col">Vehículo</th>
+            <th scope="col">Placas con restricción</th>
+            <th scope="col">Información</th>
           </tr>
         </thead>
         <tbody>

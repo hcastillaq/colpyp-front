@@ -3,6 +3,7 @@ import { Remarkable } from 'remarkable';
 
 const { content } = await Astro.props;
 const md = new Remarkable();
+export const prerender = false;
 ---
 
-<div set:html={md.render(content)} class="markdown-content" />
+<article set:html={md.render(content)} class="markdown-content" />
