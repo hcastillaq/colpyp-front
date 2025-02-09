@@ -1,6 +1,9 @@
 ---
+import Analytics from '../components/shared/Analytics.astro';
 import Divider from '../components/shared/Divider.astro';
 import Footer from '../components/shared/Footer.astro';
+import Gtag from '../components/shared/Gtag.astro';
+
 import Header from '../components/shared/Header.astro';
 import '../styles/styles.css';
 
@@ -37,36 +40,8 @@ const keywords =
     <!-- sitemap -->
     <link rel="sitemap" href="/sitemap-index.xml" />
 
-    <!-- google analytics -->
-    <script
-      type="text/partytown"
-      async
-      src="https://www.googletagmanager.com/gtag/js?id=G-RDY45LS9ZZ"></script>
-
-    <script type="text/partytown">
-      window.dataLayer = window.dataLayer || [];
-      function gtag() {
-        dataLayer.push(arguments);
-      }
-      gtag('js', new Date());
-
-      gtag('config', 'G-RDY45LS9ZZ');
-    </script>
-
-    <!-- Google tag  -->
-    <script
-      type="text/partytown"
-      async
-      src="https://www.googletagmanager.com/gtag/js?id=GT-K58ZPXNP"></script>
-    <script type="text/partytown">
-      window.dataLayer = window.dataLayer || [];
-      function gtag() {
-        dataLayer.push(arguments);
-      }
-      gtag('js', new Date());
-
-      gtag('config', 'GT-K58ZPXNP');
-    </script>
+    <Analytics />
+    <Gtag />
   </head>
   <body>
     <div class="max-w-2xl mx-auto px-2 md:px-0">

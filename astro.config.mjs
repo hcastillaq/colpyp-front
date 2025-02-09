@@ -7,8 +7,6 @@ import node from '@astrojs/node';
 
 import react from '@astrojs/react';
 
-import partytown from '@astrojs/partytown';
-
 import playformCompress from '@playform/compress';
 
 import compressor from 'astro-compressor';
@@ -35,11 +33,6 @@ export default defineConfig({
 
   integrations: [
     react(),
-    partytown({
-      config: {
-        forward: ['dataLayer.push'],
-      },
-    }),
     playformCompress({
       CSS: true,
       HTML: true,
