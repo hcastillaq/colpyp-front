@@ -39,7 +39,7 @@ export default defineConfig({
     }),
     compressor({
       brotli: true,
-      gzip: false,
+      gzip: true,
     }),
     sitemap({
       customPages: [
