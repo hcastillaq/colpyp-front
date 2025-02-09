@@ -13,11 +13,10 @@ export const CityRestrictions: FC<Props> = ({ city }) => {
   const [loading, setLoading] = useState(false);
   const [date, setDate] = useState<Date>();
 
-  const getRestrictions = async () => {
-    const restrictions = await fetch(`/api/restrictions/${city}`).then(
+  const getRestrictions = () => {
+    return fetch(`/api/restrictions/${city}`).then(
       async (res) => await res.json(),
     );
-    return restrictions;
   };
 
   const getRestrictionsByDate = (date: Date | null | undefined) => {
